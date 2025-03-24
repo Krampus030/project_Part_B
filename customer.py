@@ -69,6 +69,52 @@ class Customer:
         else:
             print("Invalid choice.")
 
+    def book_single_seat(self):
+        print("\n--- Booking One Seat ---")
+        name = input("Enter your name: ").strip()
+        phone = input("Enter your phone number: ").strip()
+        passport = input("Enter your passport number: ").strip()
+        gender = input("Enter your gender: ").strip()
+        seat = input("Enter seat to book (e.g., 10A): ").strip().upper()
+
+        if seat not in self.seats:
+            print("Invalid seat number.")
+            return
+
+        if self.seats[seat] == "F":
+            self.seats[seat] = "R"
+            print(f"Seat {seat} booked successfully for {name}.")
+        else:
+            print(f"Seat {seat} is not available. Status: {self.seats[seat]}")
+
+    def book_multiple_seats(self):
+        print("\n--- Booking Multiple Seats ---")
+        try:
+            count = int(input("How many seats would you like to book?: ").strip())
+            if count <= 0:
+                print("Seat count must be at least 1.")
+                return
+        except ValueError:
+            print("Invalid number.")
+            return
+
+        for i in range(count):
+            print(f"\n--- Booking seat {i + 1} of {count} ---")
+            name = input("Enter your name: ").strip()
+            phone = input("Enter your phone number: ").strip()
+            passport = input("Enter your passport number: ").strip()
+            gender = input("Enter your gender: ").strip()
+            seat = input("Enter seat to book (e.g., 10A): ").strip().upper()
+
+            if seat not in self.seats:
+                print("Invalid seat number. Skipping...")
+                continue
+
+            if self.seats[seat] == "F":
+                self.seats[seat] = "R"
+                print(f"Seat {seat} booked successfully for {name}.")
+            else:
+                print(f"Seat {seat} is not available. Status: {self.seats[seat]}")
 
     def cancel(self):
         pass

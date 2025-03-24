@@ -23,7 +23,7 @@ class CustomerCLI:
         self.customer.check_availability()
 
     def book(self):
-        pass
+        self.customer.book()
 
     def cancel(self):
         pass
