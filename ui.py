@@ -1,8 +1,8 @@
 
 class CustomerCLI:
-    def __init__(self, admin_instance, user_instance):
+    def __init__(self, admin_instance, customer_instance):
         self.admin = admin_instance
-        self.user = user_instance
+        self.customer = customer_instance
         self.commands = {
             "1": self.help,
             "2": self.check_availability,
@@ -10,7 +10,7 @@ class CustomerCLI:
             "4": self.cancel,
             "5": self.status,
             "exit": self.exit,
-            "admin": self.login
+            "admin login": self.login
         }
 
     def login(self):
@@ -20,7 +20,7 @@ class CustomerCLI:
 
 
     def check_availability(self):
-        pass
+        self.customer.check_availability()
 
     def book(self):
         pass
@@ -47,7 +47,7 @@ class CustomerCLI:
 
 
 class CompanyCLI:
-    def __init__(self,admin_instance):
+    def __init__(self, admin_instance):
         self.admin = admin_instance
         self.commands = {
             "1": self.help,
@@ -70,3 +70,7 @@ class CompanyCLI:
         print("  1.help                - show help message.")
         print("  2.check booked seat   - check the amount the seat booked.")
         print("  3.logout              - back to customer command menu.")
+
+
+print("Please go to Terminal and input python run.py to use the program")
+print("Or run 'run.py' directly")

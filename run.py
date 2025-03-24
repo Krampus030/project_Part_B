@@ -1,4 +1,5 @@
 from admin import admin1
+from customer import customer1
 from ui import CustomerCLI, CompanyCLI
 
 
@@ -9,17 +10,20 @@ class CLIApp:
     """
 
     def __init__(self):
-        self.admin1 = admin1
+        self.admin = admin1
         self.customer1 = customer1
-        self.customer = CustomerCLI(self.admin)
-        self.admin = CompanyCLI(self.admin)
+        self.customer_cli = CustomerCLI(self.admin, self.customer1)
+        self.admin_cli = CompanyCLI(self.admin)
 
     def run(self):
         """
         Interactive CLI loop for handling customer commands.
         """
+        print("=== Welcome to the Seat Booking CLI ===")
+        print("Type '1' for help menu.")
+
         while True:
-            command_set = self.admin if self.logged_in else self.customer
+            command_set = self.admin_cli if self.admin.logged_in else self.customer_cli
 
             command_name = input("Enter command: ").strip()
 
@@ -29,9 +33,10 @@ class CLIApp:
                 command()
             else:
                 print(f"Error: Unknown command '{command_name}'.")
-                print("Use 'help' to see available commands.")
+                print("Use '1' to see available commands.")
 
 
 if __name__ == "__main__":
     app = CLIApp()
     app.run()
+
