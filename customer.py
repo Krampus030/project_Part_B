@@ -57,7 +57,17 @@ class Customer:
             print("  ".join(row_display))
 
     def book(self):
-        pass
+        print("Booking Options:")
+        print("1. Book one single seat.")
+        print("2. Book multiple seats.")
+        choice = input("Enter your choice (1 or 2): ").strip()
+
+        if choice == "1":
+            self.book_single_seat()
+        elif choice == "2":
+            self.book_multiple_seats()
+        else:
+            print("Invalid choice.")
 
 
     def cancel(self):
