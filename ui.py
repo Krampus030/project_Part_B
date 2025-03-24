@@ -5,7 +5,7 @@ class CustomerCLI:
         self.user = user_instance
         self.commands = {
             "1": self.help,
-            "2": self.check_availabitily,
+            "2": self.check_availability,
             "3": self.book,
             "4": self.cancel,
             "5": self.status,
@@ -19,6 +19,21 @@ class CustomerCLI:
         self.admin.login(username, password)
 
 
+    def check_availability(self):
+        pass
+
+    def book(self):
+        pass
+
+    def cancel(self):
+        pass
+
+    def status(self):
+        pass
+
+    def exit(self):
+        pass
+
     def help(self):
         print("\nAvailable commands:")
         print("  1.help                - show help message.")
@@ -28,3 +43,30 @@ class CustomerCLI:
         print("  5.booking status      - check the booking status.")
         print("  exit                  - exit the program.")
         print("  admin login           - * admin account, staff only.")
+
+
+
+class CompanyCLI:
+    def __init__(self,admin_instance):
+        self.admin = admin_instance
+        self.commands = {
+            "1": self.help,
+            "2": self.check_booked_seat,
+            "logout": self.logout
+
+        }
+
+
+    def logout(self):
+        self.admin.logout()
+
+
+    def check_booked_seat(self):
+        pass
+
+
+    def help(self):
+        print("\nAvailable commands:")
+        print("  1.help                - show help message.")
+        print("  2.check booked seat   - check the amount the seat booked.")
+        print("  3.logout              - back to customer command menu.")
