@@ -1,3 +1,23 @@
+def validate_phone(phone):
+    return phone.isdigit() and len(phone) >= 11
+
+
+def validate_passport(passport):
+    return len(passport) >= 5
+
+
+def validate_gender(gender):
+    return gender.lower() in ["m", "f", "male", "female"]
+
+
+def validate_seat_format(seat_id):
+    if len(seat_id) < 2:
+        return False
+    num_part = seat_id[:-1]
+    row_part = seat_id[-1]
+    return num_part.isdigit() and 1 <= int(num_part) <= 80 and row_part in "ABCDEF"
+
+
 class Customer:
     def __init__(self):
         self.seats = self.initialise_seats()
@@ -71,21 +91,43 @@ class Customer:
 
     def book_single_seat(self):
         print("\n--- Booking One Seat ---")
-        name = input("Enter your name: ").strip()
-        phone = input("Enter your phone number: ").strip()
-        passport = input("Enter your passport number: ").strip()
-        gender = input("Enter your gender: ").strip()
-        seat = input("Enter seat to book (e.g., 10A): ").strip().upper()
 
-        if seat not in self.seats:
-            print("Invalid seat number.")
-            return
+        while True:
+            name = input("Enter your name: ").strip()
+            if name:
+                break
 
-        if self.seats[seat] == "F":
-            self.seats[seat] = "R"
-            print(f"Seat {seat} booked successfully for {name}.")
-        else:
-            print(f"Seat {seat} is not available. Status: {self.seats[seat]}")
+        while True:
+            phone = input("Enter your phone number: ").strip()
+            if validate_phone(phone):
+                break
+
+        while True:
+            passport = input("Enter your passport number: ").strip()
+            if validate_passport(passport):
+                break
+
+        while True:
+            gender = input("Enter your gender (M/F): ").strip()
+            if validate_gender(gender):
+                break
+
+        while True:
+            seat = input("Enter seat to book (e.g., 10A): ").strip().upper()
+            if not validate_seat_format(seat):
+                print("Invalid seat format.")
+                continue
+
+            if seat not in self.seats:
+                print("Seat does not exist.")
+                continue
+
+            if self.seats[seat] == "F":
+                self.seats[seat] = "R"
+                print(f"Seat {seat} booked successfully for {name}.")
+                break
+            else:
+                print(f"Seat {seat} not available. Status: {self.seats[seat]}")
 
     def book_multiple_seats(self):
         print("\n--- Booking Multiple Seats ---")
