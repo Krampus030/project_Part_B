@@ -96,21 +96,25 @@ class Customer:
             name = input("Enter your name: ").strip()
             if name:
                 break
+            print("Name cannot be empty.")
 
         while True:
             phone = input("Enter your phone number: ").strip()
             if validate_phone(phone):
                 break
+            print("Invalid phone number. Digits only, min 11 digits.")
 
         while True:
             passport = input("Enter your passport number: ").strip()
             if validate_passport(passport):
                 break
+            print("Invalid passport number.")
 
         while True:
             gender = input("Enter your gender (M/F): ").strip()
             if validate_gender(gender):
                 break
+            print("Invalid gender. Enter M or F.")
 
         while True:
             seat = input("Enter seat to book (e.g., 10A): ").strip().upper()
@@ -141,22 +145,46 @@ class Customer:
             return
 
         for i in range(count):
-            print(f"\n--- Booking seat {i + 1} of {count} ---")
-            name = input("Enter your name: ").strip()
-            phone = input("Enter your phone number: ").strip()
-            passport = input("Enter your passport number: ").strip()
-            gender = input("Enter your gender: ").strip()
-            seat = input("Enter seat to book (e.g., 10A): ").strip().upper()
+            while True:
+                name = input("Enter your name: ").strip()
+                if name:
+                    break
+                print("Name cannot be empty.")
 
-            if seat not in self.seats:
-                print("Invalid seat number. Skipping...")
-                continue
+            while True:
+                phone = input("Enter your phone number: ").strip()
+                if validate_phone(phone):
+                    break
+                print("Invalid phone number. Digits only, min 11 digits.")
 
-            if self.seats[seat] == "F":
-                self.seats[seat] = "R"
-                print(f"Seat {seat} booked successfully for {name}.")
-            else:
-                print(f"Seat {seat} is not available. Status: {self.seats[seat]}")
+            while True:
+                passport = input("Enter your passport number: ").strip()
+                if validate_passport(passport):
+                    break
+                print("Invalid passport number.")
+
+            while True:
+                gender = input("Enter your gender (M/F): ").strip()
+                if validate_gender(gender):
+                    break
+                print("Invalid gender. Enter M or F.")
+
+            while True:
+                seat = input("Enter seat to book (e.g., 10A): ").strip().upper()
+                if not validate_seat_format(seat):
+                    print("Invalid seat format.")
+                    continue
+
+                if seat not in self.seats:
+                    print("Seat does not exist.")
+                    continue
+
+                if self.seats[seat] == "F":
+                    self.seats[seat] = "R"
+                    print(f"Seat {seat} booked successfully for {name}.")
+                    break
+                else:
+                    print(f"Seat {seat} not available. Status: {self.seats[seat]}")
 
     def cancel(self):
         pass
