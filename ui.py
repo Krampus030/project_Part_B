@@ -1,4 +1,5 @@
 import sys
+from database import InfoDatabase
 
 
 class CustomerCLI:
@@ -52,10 +53,11 @@ class CustomerCLI:
 class CompanyCLI:
     def __init__(self, admin_instance):
         self.admin = admin_instance
+        self.db = InfoDatabase()
         self.commands = {
             "1": self.help,
             "2": self.check_booked_seat,
-            "logout": self.logout
+            "3": self.logout
 
         }
 
@@ -65,7 +67,14 @@ class CompanyCLI:
 
 
     def check_booked_seat(self):
-        pass
+        print("\n--- All Bookings ---")
+        bookings = self.db.get_all_bookings()
+        if not bookings:
+            print("No bookings found.")
+            return
+
+        for i, (name, gender, phone, passport) in enumerate(bookings, start=1):
+            print(f"{i}. Name: {name}, Gender: {gender}, Phone: {phone}, Passport: {passport}")
 
 
     def help(self):

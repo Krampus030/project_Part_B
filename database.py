@@ -62,6 +62,9 @@ class InfoDatabase:
         self.cursor.execute("SELECT * FROM customer_info")
         return self.cursor.fetchall()
 
+    def get_all_bookings(self):
+        self.cursor.execute("SELECT name, gender, phone_number, passport_number FROM customer_info")
+        return self.cursor.fetchall()
 
 
 database = InfoDatabase()
