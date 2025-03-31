@@ -1,3 +1,5 @@
+import sys
+
 
 class CustomerCLI:
     def __init__(self, admin_instance, customer_instance):
@@ -29,10 +31,11 @@ class CustomerCLI:
         self.customer.cancel()
 
     def status(self):
-        pass
+        self.customer.status()
 
     def exit(self):
-        pass
+        print("Thank you for using the booking system, SEE YOU")
+        sys.exit()
 
     def help(self):
         print("\nAvailable commands:")

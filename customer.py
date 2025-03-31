@@ -1,4 +1,6 @@
 from database import InfoDatabase
+import time
+
 
 
 def validate_phone(phone):
@@ -210,6 +212,23 @@ class Customer:
             print("No matching booking found. Please check your info.")
 
 
+    def status(self):
+        print("\n--- Check Booking Status ---")
+        name = input("Enter your name: ").strip()
+
+        print("Checking booking status, please wait...")
+        time.sleep(5)
+
+        self.db.cursor.execute('''
+            SELECT * FROM customer_info
+            WHERE name=?
+        ''', (name,))
+        result = self.db.cursor.fetchone()
+
+        if result:
+            print(f"Booking found for {name}.")
+        else:
+            print("No booking found under that name.")
 
 
 
