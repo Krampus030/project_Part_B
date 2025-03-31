@@ -26,7 +26,7 @@ class CustomerCLI:
         self.customer.book()
 
     def cancel(self):
-        pass
+        self.customer.cancel()
 
     def status(self):
         pass

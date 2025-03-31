@@ -41,7 +41,22 @@ class InfoDatabase:
             print("Error inserting into database:", e)
             return False
 
+    def delete_customer_info(self, name, gender, phone, passport):
+        self.cursor.execute('''
+            SELECT rowid FROM customer_info
+            WHERE name=? AND gender=? AND phone_number=? AND passport_number=?
+        ''', (name, gender, phone, passport))
+        result = self.cursor.fetchone()
 
+        if result:
+            self.cursor.execute('''
+                DELETE FROM customer_info
+                WHERE name=? AND gender=? AND phone_number=? AND passport_number=?
+            ''', (name, gender, phone, passport))
+            self.conn.commit()
+            return True
+        else:
+            return False
 
     def fetch_all_customer_info(self):
         self.cursor.execute("SELECT * FROM customer_info")

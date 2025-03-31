@@ -195,9 +195,19 @@ class Customer:
                     print(f"Seat {seat} not available. Status: {self.seats[seat]}")
 
     def cancel(self):
-        pass
+        print("\n--- Cancel Booking ---")
 
+        name = input("Enter your name: ").strip()
+        gender = input("Enter your gender (M/F): ").strip()
+        phone = input("Enter your phone number: ").strip()
+        passport = input("Enter your passport number: ").strip()
 
+        success = self.db.delete_customer_info(name, gender, phone, passport)
+
+        if success:
+            print(f"✅ Booking for {name} cancelled successfully.")
+        else:
+            print("No matching booking found. Please check your info.")
 
 
 
