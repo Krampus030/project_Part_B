@@ -20,6 +20,7 @@ class InfoDatabase:
         CREATE TABLE IF NOT EXISTS customer(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
+        reference TEXT NOT NULL,
         seat TEXT NOT NULL
         )
         ''')
@@ -54,6 +55,19 @@ class InfoDatabase:
             print("Error inserting into database:", e)
             return False
 
+    def insert_customer_booking(self, name, reference, seat):
+        try:
+            self.cursor.execute('''
+                INSERT INTO customer (name, reference, seat)
+                VALUES (?, ?, ?)
+            ''', (name, reference, seat))
+            self.conn.commit()
+            return True
+        except Exception as e:
+            print("Error inserting booking into customer table:", e)
+            return False
+
+
     def delete_customer_info(self, name, gender, phone, passport):
         """
         Delete a customer record by matching all fields.
@@ -81,14 +95,21 @@ class InfoDatabase:
         self.cursor.execute("SELECT * FROM customer_info")
         return self.cursor.fetchall()
 
-    def get_all_bookings(self):
+
+    def get_all_customer(self):
         """
         Return name and contact info for all bookings.
         """
-        self.cursor.execute("SELECT name, gender, phone_number, passport_number FROM customer_info")
+        self.cursor.execute("SELECT name, phone_number, passport_number FROM customer_info")
+        return self.cursor.fetchall()
+
+    def get_all_bookings(self):
+        """
+        Return id and reference of customer for all bookings.
+        """
+        self.cursor.execute("SELECT id, name, reference, seat FROM customer")
         return self.cursor.fetchall()
 
 
-
 database = InfoDatabase()
-print(database.fetch_all_customer_info())
+print(database.get_all_bookings())

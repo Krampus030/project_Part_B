@@ -1,8 +1,10 @@
 from database import InfoDatabase
 import time
+import random
 
 
 # Validation functions
+
 def validate_phone(phone):
     return phone.isdigit() and len(phone) >= 11
 
@@ -21,6 +23,18 @@ def validate_seat_format(seat_id):
     num_part = seat_id[:-1]
     row_part = seat_id[-1]
     return num_part.isdigit() and 1 <= int(num_part) <= 80 and row_part in "ABCDEF"
+
+
+def generate_booking_reference():
+    reference = ""
+    characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+    for i in range(8):
+        index = random.randint(0, len(characters) - 1)
+        reference += characters[index]
+
+    return reference
+
 
 
 class Customer:
@@ -115,7 +129,7 @@ class Customer:
             print("Name cannot be empty.")
 
         while True:
-            phone = input("Enter your phone number: ").strip()
+            phone = input("Enter your phone number,min 11 digits: ").strip()
             if validate_phone(phone):
                 break
             print("Invalid phone number. Digits only, min 11 digits.")
@@ -146,7 +160,11 @@ class Customer:
                 self.seats[seat] = "R"
                 success = self.db.insert_customer_info(name, gender, phone, passport)
                 if success:
+                    reference = generate_booking_reference()
+                    self.db.insert_customer_booking(name, reference, seat)
                     print(f"Information for {name} saved to database.")
+                    print(f" Booking reference: {reference}")
+
                 break
             else:
                 print(f"Seat {seat} not available. Status: {self.seats[seat]}")
@@ -173,7 +191,7 @@ class Customer:
                 print("Name cannot be empty.")
 
             while True:
-                phone = input("Enter your phone number: ").strip()
+                phone = input("Enter your phone number, min 11 digits: ").strip()
                 if validate_phone(phone):
                     break
                 print("Invalid phone number. Digits only, min 11 digits.")
@@ -204,7 +222,10 @@ class Customer:
                     self.seats[seat] = "R"
                     success = self.db.insert_customer_info(name, gender, phone, passport)
                     if success:
+                        reference = generate_booking_reference()
+                        self.db.insert_customer_booking(name, reference, seat)
                         print(f"Information for {name} saved to database.")
+                        print(f" Booking reference: {reference}")
                     break
                 else:
                     print(f"Seat {seat} not available. Status: {self.seats[seat]}")
