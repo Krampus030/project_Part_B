@@ -2,6 +2,10 @@ import sqlite3
 
 
 class InfoDatabase:
+    """
+    Database for customer seat and personal information.
+    """
+
     def __init__(self):
         self.conn = sqlite3.connect("info.db")
         self.cursor = self.conn.cursor()
@@ -9,16 +13,22 @@ class InfoDatabase:
         self.create_info_table()
 
     def create_customer_table(self):
+        """
+        Create seat booking table if it doesn't exist.
+        """
         self.cursor.execute('''
         CREATE TABLE IF NOT EXISTS customer(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         seat TEXT NOT NULL
         )
-    ''')
+        ''')
         self.conn.commit()
 
     def create_info_table(self):
+        """
+        Create customer info table if it doesn't exist.
+        """
         self.cursor.execute('''
         CREATE TABLE IF NOT EXISTS customer_info(
         name TEXT NOT NULL,
@@ -26,15 +36,18 @@ class InfoDatabase:
         phone_number INTEGER NOT NULL,
         passport_number TEXT NOT NULL
         )
-    ''')
+        ''')
         self.conn.commit()
 
     def insert_customer_info(self, name, gender, phone, passport):
+        """
+        Insert a new customer record into the database.
+        """
         try:
             self.cursor.execute('''
-                    INSERT INTO customer_info (name, gender, phone_number, passport_number)
-                    VALUES (?, ?, ?, ?)
-                ''', (name, gender, phone, passport))
+                INSERT INTO customer_info (name, gender, phone_number, passport_number)
+                VALUES (?, ?, ?, ?)
+            ''', (name, gender, phone, passport))
             self.conn.commit()
             return True
         except Exception as e:
@@ -42,6 +55,9 @@ class InfoDatabase:
             return False
 
     def delete_customer_info(self, name, gender, phone, passport):
+        """
+        Delete a customer record by matching all fields.
+        """
         self.cursor.execute('''
             SELECT rowid FROM customer_info
             WHERE name=? AND gender=? AND phone_number=? AND passport_number=?
@@ -59,12 +75,19 @@ class InfoDatabase:
             return False
 
     def fetch_all_customer_info(self):
+        """
+        Return all records from customer_info table.
+        """
         self.cursor.execute("SELECT * FROM customer_info")
         return self.cursor.fetchall()
 
     def get_all_bookings(self):
+        """
+        Return name and contact info for all bookings.
+        """
         self.cursor.execute("SELECT name, gender, phone_number, passport_number FROM customer_info")
         return self.cursor.fetchall()
+
 
 
 database = InfoDatabase()

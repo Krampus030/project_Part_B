@@ -2,7 +2,7 @@ from database import InfoDatabase
 import time
 
 
-
+# Validation functions
 def validate_phone(phone):
     return phone.isdigit() and len(phone) >= 11
 
@@ -30,12 +30,14 @@ class Customer:
 
     @staticmethod
     def initialise_seats():
+        """
+        Initialize all seats as free, mark storage seats as S.
+        """
         seats = {}
         for row in "ABCDEF":
             for col in range(1, 81):
                 seat_id = f"{col}{row}"
                 seats[seat_id] = "F"
-
 
         storage_seats = ["77E", "77F", "78E", "78F", "79E", "79F", "80E", "80F"]
         for seat in storage_seats:
@@ -45,7 +47,9 @@ class Customer:
         return seats
 
     def check_availability(self):
-
+        """
+        Display seat availability by group.
+        """
         print("Select group to view seat availability:")
         print("1. Seats 1-20")
         print("2. Seats 21-40")
@@ -83,6 +87,9 @@ class Customer:
             print("  ".join(row_display))
 
     def book(self):
+        """
+        choosing single or multiple seat booking.
+        """
         print("Booking Options:")
         print("1. Book one single seat.")
         print("2. Book multiple seats.")
@@ -96,6 +103,9 @@ class Customer:
             print("Invalid choice.")
 
     def book_single_seat(self):
+        """
+        booking a single seat with validation.
+        """
         print("\n--- Booking One Seat ---")
 
         while True:
@@ -142,6 +152,9 @@ class Customer:
                 print(f"Seat {seat} not available. Status: {self.seats[seat]}")
 
     def book_multiple_seats(self):
+        """
+        booking multiple seats.
+        """
         print("\n--- Booking Multiple Seats ---")
         try:
             count = int(input("How many seats would you like to book?: ").strip())
@@ -197,6 +210,9 @@ class Customer:
                     print(f"Seat {seat} not available. Status: {self.seats[seat]}")
 
     def cancel(self):
+        """
+        Cancel a booking using exact personal information.
+        """
         print("\n--- Cancel Booking ---")
 
         name = input("Enter your name: ").strip()
@@ -207,12 +223,14 @@ class Customer:
         success = self.db.delete_customer_info(name, gender, phone, passport)
 
         if success:
-            print(f"✅ Booking for {name} cancelled successfully.")
+            print(f"Booking for {name} cancelled successfully.")
         else:
             print("No matching booking found. Please check your info.")
 
-
     def status(self):
+        """
+        Check if a booking exists under the given name.
+        """
         print("\n--- Check Booking Status ---")
         name = input("Enter your name: ").strip()
 
@@ -231,5 +249,5 @@ class Customer:
             print("No booking found under that name.")
 
 
-
+# Global instance
 customer1 = Customer()

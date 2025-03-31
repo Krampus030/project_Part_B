@@ -5,17 +5,16 @@ ADMIN_FILE = "admin.json"
 
 class Admin:
     """
-    Manage user authentication
+    Manage admin authentication.
     """
 
     def __init__(self):
         self.admin = self.load_user()  # Load admin credential
-        self.logged_in = None
-
+        self.logged_in = None  # Track active session
 
     def load_user(self):
         """
-        Load admin credential from file
+        Load admin credential from file.
         """
         try:
             with open(ADMIN_FILE, "r", encoding="utf-8") as f:
@@ -27,7 +26,7 @@ class Admin:
 
     def login(self, username, password):
         """
-        Authenticate user and set session.
+        Authenticate admin and set session.
         """
         if self.admin.get(username) == password:
             self.logged_in = username
@@ -45,7 +44,6 @@ class Admin:
             self.logged_in = None
         else:
             print("No active session.")
-
 
 
 
