@@ -29,5 +29,25 @@ class InfoDatabase:
     ''')
         self.conn.commit()
 
+    def insert_customer_info(self, name, gender, phone, passport):
+        try:
+            self.cursor.execute('''
+                    INSERT INTO customer_info (name, gender, phone_number, passport_number)
+                    VALUES (?, ?, ?, ?)
+                ''', (name, gender, phone, passport))
+            self.conn.commit()
+            return True
+        except Exception as e:
+            print("Error inserting into database:", e)
+            return False
+
+
+
+    def fetch_all_customer_info(self):
+        self.cursor.execute("SELECT * FROM customer_info")
+        return self.cursor.fetchall()
+
+
 
 database = InfoDatabase()
+print(database.fetch_all_customer_info())

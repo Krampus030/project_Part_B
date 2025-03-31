@@ -1,3 +1,6 @@
+from database import InfoDatabase
+
+
 def validate_phone(phone):
     return phone.isdigit() and len(phone) >= 11
 
@@ -21,7 +24,7 @@ def validate_seat_format(seat_id):
 class Customer:
     def __init__(self):
         self.seats = self.initialise_seats()
-
+        self.db = InfoDatabase()
 
     @staticmethod
     def initialise_seats():
@@ -40,6 +43,7 @@ class Customer:
         return seats
 
     def check_availability(self):
+
         print("Select group to view seat availability:")
         print("1. Seats 1-20")
         print("2. Seats 21-40")
@@ -128,7 +132,9 @@ class Customer:
 
             if self.seats[seat] == "F":
                 self.seats[seat] = "R"
-                print(f"Seat {seat} booked successfully for {name}.")
+                success = self.db.insert_customer_info(name, gender, phone, passport)
+                if success:
+                    print(f"Information for {name} saved to database.")
                 break
             else:
                 print(f"Seat {seat} not available. Status: {self.seats[seat]}")
@@ -181,7 +187,9 @@ class Customer:
 
                 if self.seats[seat] == "F":
                     self.seats[seat] = "R"
-                    print(f"Seat {seat} booked successfully for {name}.")
+                    success = self.db.insert_customer_info(name, gender, phone, passport)
+                    if success:
+                        print(f"Information for {name} saved to database.")
                     break
                 else:
                     print(f"Seat {seat} not available. Status: {self.seats[seat]}")
