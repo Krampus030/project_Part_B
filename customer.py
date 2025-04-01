@@ -25,15 +25,19 @@ def validate_seat_format(seat_id):
     return num_part.isdigit() and 1 <= int(num_part) <= 80 and row_part in "ABCDEF"
 
 
-def generate_booking_reference():
-    reference = ""
-    characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+def generate_booking_reference(existing_refs):
 
-    for i in range(8):
-        index = random.randint(0, len(characters) - 1)
-        reference += characters[index]
+    while True:
+        reference = ""
+        characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-    return reference
+        for i in range(8):
+            index = random.randint(0, len(characters) - 1)
+            reference += characters[index]
+
+        if reference not in existing_refs:
+            return reference
+
 
 
 
@@ -118,7 +122,7 @@ class Customer:
 
     def book_single_seat(self):
         """
-        booking a single seat with validation.
+        booking a single seat with validated information.
         """
         print("\n--- Booking One Seat ---")
 
@@ -159,10 +163,14 @@ class Customer:
             if self.seats[seat] == "F":
                 self.seats[seat] = "R"
                 success = self.db.insert_customer_info(name, gender, phone, passport)
+
                 if success:
-                    reference = generate_booking_reference()
+                    existing_refs = self.db.get_all_references()
+                    reference = generate_booking_reference(existing_refs)
+
                     self.db.insert_customer_booking(name, reference, seat)
                     print(f"Information for {name} saved to database.")
+
                     print(f" Booking reference: {reference}")
 
                 break
@@ -171,7 +179,7 @@ class Customer:
 
     def book_multiple_seats(self):
         """
-        booking multiple seats.
+        booking multiple seats with validated information
         """
         print("\n--- Booking Multiple Seats ---")
         try:
@@ -221,9 +229,13 @@ class Customer:
                 if self.seats[seat] == "F":
                     self.seats[seat] = "R"
                     success = self.db.insert_customer_info(name, gender, phone, passport)
+
                     if success:
-                        reference = generate_booking_reference()
+                        existing_refs = self.db.get_all_references()
+                        reference = generate_booking_reference(existing_refs)
+
                         self.db.insert_customer_booking(name, reference, seat)
+
                         print(f"Information for {name} saved to database.")
                         print(f" Booking reference: {reference}")
                     break

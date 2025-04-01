@@ -95,6 +95,13 @@ class InfoDatabase:
         self.cursor.execute("SELECT * FROM customer_info")
         return self.cursor.fetchall()
 
+    def get_all_references(self):
+        """
+        Return all reference from customer table
+        """
+        self.cursor.execute("SELECT reference FROM customer")
+        results = self.cursor.fetchall()
+        return {row[0] for row in results}
 
     def get_all_customer(self):
         """
