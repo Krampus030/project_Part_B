@@ -83,8 +83,9 @@ class CompanyCLI:
         self.db = InfoDatabase()
         self.commands = {
             "1": self.help,
-            "2": self.check_booked_seat,
-            "3": self.logout
+            "2": self.check_customer_info,
+            "3": self.check_customer,
+            "4": self.logout
         }
 
     def logout(self):
@@ -93,7 +94,7 @@ class CompanyCLI:
         """
         self.admin.logout()
 
-    def check_booked_seat(self):
+    def check_customer_info(self):
         """
         Display all current bookings.
         """
@@ -106,14 +107,28 @@ class CompanyCLI:
         for i, (name, gender, phone, passport) in enumerate(bookings, start=1):
             print(f"{i}. Name: {name}, Gender: {gender}, Phone: {phone}, Passport: {passport}")
 
+    def check_customer(self):
+        """
+        Display all current booked seats
+        """
+        print("\n--- All Bookings ---")
+        booking = self.db.get_all_bookings()
+        if not booking:
+            print("No bookings found.")
+            return
+
+        for i, (id, name, reference, seat) in enumerate(booking, start=1):
+            print(f"{i}. Id: {id}, Name: {name}, Reference: {reference}, Seat: {seat}")
+
     def help(self):
         """
         Display list of available admin commands.
         """
         print("\nAvailable commands:")
         print("  1.help                - show help message.")
-        print("  2.check booked seat   - check the amount the seat booked.")
-        print("  3.logout              - back to customer command menu.")
+        print("  2.check customer info   - check the customer info.")
+        print("  3.check booked seat   - check the amount the seat booked.")
+        print("  4.logout              - back to customer command menu.")
 
 
 # Startup message
