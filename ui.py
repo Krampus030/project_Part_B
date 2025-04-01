@@ -98,7 +98,7 @@ class CompanyCLI:
         Display all current bookings.
         """
         print("\n--- All Bookings ---")
-        bookings = self.db.get_all_bookings()
+        bookings = self.db.get_all_customer()
         if not bookings:
             print("No bookings found.")
             return

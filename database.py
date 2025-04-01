@@ -107,7 +107,7 @@ class InfoDatabase:
         """
         Return name and contact info for all bookings.
         """
-        self.cursor.execute("SELECT name, phone_number, passport_number FROM customer_info")
+        self.cursor.execute("SELECT name, gender, phone_number, passport_number FROM customer_info")
         return self.cursor.fetchall()
 
     def get_all_bookings(self):
