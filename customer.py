@@ -4,7 +4,6 @@ import random
 
 
 # Validation functions
-
 def validate_phone(phone):
     return phone.isdigit() and len(phone) >= 11
 
@@ -37,7 +36,6 @@ def generate_booking_reference(existing_refs):
 
         if reference not in existing_refs:
             return reference
-
 
 
 
@@ -95,7 +93,8 @@ class Customer:
                 seat_id = f"{col}{row}"
                 status = self.seats[seat_id]
                 row_display.append(f"{seat_id}:{status}")
-            row_display.append("X")
+            row_display.append("X")  # aisle
+
 
             for row in "DEF":
                 seat_id = f"{col}{row}"
@@ -122,7 +121,7 @@ class Customer:
 
     def book_single_seat(self):
         """
-        booking a single seat with validated information.
+        booking a single seat with validated information and error handling.
         """
         print("\n--- Booking One Seat ---")
 
@@ -163,14 +162,17 @@ class Customer:
             if self.seats[seat] == "F":
                 self.seats[seat] = "R"
                 success = self.db.insert_customer_info(name, gender, phone, passport)
-
+                # change seat status
                 if success:
+                    """
+                    read the table; call the generator function; insert the data
+                    """
                     existing_refs = self.db.get_all_references()
                     reference = generate_booking_reference(existing_refs)
 
                     self.db.insert_customer_booking(name, reference, seat)
-                    print(f"Information for {name} saved to database.")
 
+                    print(f"Information for {name} saved to database.")
                     print(f" Booking reference: {reference}")
 
                 break
@@ -179,7 +181,7 @@ class Customer:
 
     def book_multiple_seats(self):
         """
-        booking multiple seats with validated information
+        booking multiple seats with validated information and error handling
         """
         print("\n--- Booking Multiple Seats ---")
         try:
@@ -229,8 +231,11 @@ class Customer:
                 if self.seats[seat] == "F":
                     self.seats[seat] = "R"
                     success = self.db.insert_customer_info(name, gender, phone, passport)
-
+                    # seat status changed
                     if success:
+                        """
+                        read the table; call the generator function; insert the data
+                        """
                         existing_refs = self.db.get_all_references()
                         reference = generate_booking_reference(existing_refs)
 
@@ -258,11 +263,12 @@ class Customer:
         if success:
             print(f"Booking for {name} cancelled successfully.")
             seat = self.db.delete_customer_booking(name)
-            if seat:
-                if seat in self.seats and self.seats[seat] == "R":
+
+            if seat:  # if delete function runs
+                if seat in self.seats and self.seats[seat] == "R":  # current seat status
                     self.seats[seat] = "F"
                     print(f"Booking for {name} cancelled successfully. Seat {seat} is now available.")
-                else:
+                else:  # To avoid the booking and deleting is not in exact one run (i.g customer closed the program)
                     print(f"Booking cancelled, but seat {seat} was not found in seat map.")
             else:
                 print(f"Booking info deleted, but no seat record found in 'customer' table for {name}.")

@@ -106,6 +106,8 @@ class CompanyCLI:
 
         for i, (name, gender, phone, passport) in enumerate(bookings, start=1):
             print(f"{i}. Name: {name}, Gender: {gender}, Phone: {phone}, Passport: {passport}")
+        # for loop to traverse all rows, and display them.
+
 
     def check_customer(self):
         """
@@ -119,6 +121,7 @@ class CompanyCLI:
 
         for i, (id, name, reference, seat) in enumerate(booking, start=1):
             print(f"{i}. Id: {id}, Name: {name}, Reference: {reference}, Seat: {seat}")
+
 
     def help(self):
         """
