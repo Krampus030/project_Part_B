@@ -257,6 +257,15 @@ class Customer:
 
         if success:
             print(f"Booking for {name} cancelled successfully.")
+            seat = self.db.delete_customer_booking(name)
+            if seat:
+                if seat in self.seats and self.seats[seat] == "R":
+                    self.seats[seat] = "F"
+                    print(f"Booking for {name} cancelled successfully. Seat {seat} is now available.")
+                else:
+                    print(f"Booking cancelled, but seat {seat} was not found in seat map.")
+            else:
+                print(f"Booking info deleted, but no seat record found in 'customer' table for {name}.")
         else:
             print("No matching booking found. Please check your info.")
 

@@ -12,6 +12,7 @@ class InfoDatabase:
         self.create_customer_table()
         self.create_info_table()
 
+
     def create_customer_table(self):
         """
         Create seat booking table if it doesn't exist.
@@ -25,6 +26,7 @@ class InfoDatabase:
         )
         ''')
         self.conn.commit()
+
 
     def create_info_table(self):
         """
@@ -40,6 +42,7 @@ class InfoDatabase:
         ''')
         self.conn.commit()
 
+
     def insert_customer_info(self, name, gender, phone, passport):
         """
         Insert a new customer record into the database.
@@ -54,6 +57,7 @@ class InfoDatabase:
         except Exception as e:
             print("Error inserting into database:", e)
             return False
+
 
     def insert_customer_booking(self, name, reference, seat):
         try:
@@ -88,12 +92,34 @@ class InfoDatabase:
         else:
             return False
 
+
+    def delete_customer_booking(self, name):
+        """
+        Delete customer's booking from customer table and return released seat.
+        """
+        self.cursor.execute('''
+            SELECT seat FROM customer WHERE name=?
+        ''', (name,))
+        result = self.cursor.fetchone()
+
+        if result:
+            seat = result[0]
+            self.cursor.execute('''
+                DELETE FROM customer WHERE name=?
+            ''', (name,))
+            self.conn.commit()
+            return seat
+        else:
+            return None
+
+
     def fetch_all_customer_info(self):
         """
         Return all records from customer_info table.
         """
         self.cursor.execute("SELECT * FROM customer_info")
         return self.cursor.fetchall()
+
 
     def get_all_references(self):
         """
@@ -103,12 +129,14 @@ class InfoDatabase:
         results = self.cursor.fetchall()
         return {row[0] for row in results}
 
+
     def get_all_customer(self):
         """
         Return name and contact info for all bookings.
         """
         self.cursor.execute("SELECT name, gender, phone_number, passport_number FROM customer_info")
         return self.cursor.fetchall()
+
 
     def get_all_bookings(self):
         """
